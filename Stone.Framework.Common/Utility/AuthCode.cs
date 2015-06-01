@@ -53,7 +53,7 @@ namespace Stone.Framework.Common.Utility
                     g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     var dot = new Point(20, 20);
                     var nor = rnd.Next(53);
-                    var rsta = rnd.Next(130);
+                    var rsta = rnd.Next(130); // 定义一个无干扰线区间和一个起始位置
                     var m = rnd.Next(15) + 5;
                     var d = rnd.Next(20) + 15;
                     var v = rnd.Next(5) + 1; // 绘制干扰正弦曲线 M:曲线平折度, D:Y轴常量 V:X轴焦距
@@ -80,7 +80,7 @@ namespace Stone.Framework.Common.Utility
                             pxY = pyY;
                         }
                         #endregion
-
+                        //初始化光标的开始位置
                         g.TranslateTransform(18, 4);
 
                         foreach (char item in code)
