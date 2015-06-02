@@ -257,7 +257,7 @@ namespace Stone.Framework.Common.Utility
         /// <param name="b"></param>
         /// <param name="degree"></param>
         /// <returns></returns>
-        public static Bitmap KiContrast(Bitmap b, int degree)
+        public unsafe static Bitmap KiContrast(Bitmap b, int degree)
         {
             if (b == null)
             {

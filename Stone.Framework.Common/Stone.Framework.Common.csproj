@@ -54,6 +54,8 @@
     <Compile Include="Utility\ExtensionMethod.cs" />
     <Compile Include="Utility\FileHelper.cs" />
     <Compile Include="Utility\ObjectXmlSerializer.cs" />
+    <Compile Include="Utility\RndHelper.cs" />
+    <Compile Include="Utility\SecurityHelper.cs" />
     <Compile Include="Utility\SqlHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
