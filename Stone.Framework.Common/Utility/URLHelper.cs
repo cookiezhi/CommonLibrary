@@ -13,10 +13,7 @@ namespace Stone.Framework.Common.Utility
         private const string Http = "http://";
         private const string RegexQuery = @"(?<=(\&|\?|^)({0})\=).*?(?=\&|$)";
 
-        private UrlHelper()
-        {
-
-        }
+        private UrlHelper() { }
 
         /// <summary>
         /// 返回当前完整主机头.http://www.baidu.com:8088
@@ -64,7 +61,8 @@ namespace Stone.Framework.Common.Utility
                     result = HttpContext.Current.Request.UserHostAddress;
                 }
 
-                if (result.ExtensionIsNullOrEmpty() || SecurityHelper.IsIp(result))
+                //todo:SecurityHelper.IsIp(result)
+                if (result.ExtensionIsNullOrEmpty())
                 {
                     result = "127.0.0.1";
                 }

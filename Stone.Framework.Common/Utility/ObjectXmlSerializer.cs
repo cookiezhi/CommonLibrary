@@ -73,7 +73,7 @@ namespace Stone.Framework.Common.Utility
                 serializer.Serialize(writer, t);
                 return writer.ToString();
             }
-            catch (Exception ex)
+            catch
             {
                 return String.Empty;
             }

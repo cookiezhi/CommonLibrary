@@ -1,10 +1,10 @@
-﻿
-using Microsoft.International.Converters.PinYinConverter;
+﻿using Microsoft.International.Converters.PinYinConverter;
 using Microsoft.International.Formatters;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Administration;
 
 namespace Stone.Framework.Common.Utility
 {
@@ -93,11 +93,11 @@ namespace Stone.Framework.Common.Utility
             });
         }
 
-        /// <summary> 
+        /// <summary>
         /// 汉字转化为拼音首字母
-        /// </summary> 
-        /// <param name="str">汉字</param> 
-        /// <returns>首字母</returns> 
+        /// </summary>
+        /// <param name="str">汉字</param>
+        /// <returns>首字母</returns>
         public static string GetFirstPinyin(string str)
         {
             var r = string.Empty;
@@ -117,11 +117,11 @@ namespace Stone.Framework.Common.Utility
             return r;
         }
 
-        /// <summary> 
+        /// <summary>
         /// 汉字转化为拼音
-        /// </summary> 
-        /// <param name="str">汉字</param> 
-        /// <returns>全拼</returns> 
+        /// </summary>
+        /// <param name="str">汉字</param>
+        /// <returns>全拼</returns>
         public static string GetPinyin(string str)
         {
             var r = string.Empty;
