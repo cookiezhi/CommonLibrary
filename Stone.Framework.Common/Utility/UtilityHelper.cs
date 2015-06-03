@@ -10,9 +10,7 @@ namespace Stone.Framework.Common.Utility
 {
     public class UtilityHelper
     {
-        private UtilityHelper()
-        {
-        }
+        private UtilityHelper() { }
 
         /// <summary>
         /// 格式化字节数字符串
@@ -39,7 +37,7 @@ namespace Stone.Framework.Common.Utility
         /// <param name="text"></param>
         /// <param name="len"></param>
         /// <returns></returns>
-        public static string FormatTitle(string text, Int32 len)
+        public static string FormatTitle(string text, int len)
         {
             if ((text == null) || (len <= 0))
             {
@@ -90,7 +88,7 @@ namespace Stone.Framework.Common.Utility
         {
             return Regex.Replace(s, "\\d+", m =>
             {
-                int n = int.Parse(m.Value);
+                var n = int.Parse(m.Value);
                 return GetChineseToNumber(n, moneyChar);
             });
         }
@@ -114,7 +112,6 @@ namespace Stone.Framework.Common.Utility
                 catch (Exception)
                 {
                     r += obj.ToString();
-                    throw;
                 }
             }
             return r;
