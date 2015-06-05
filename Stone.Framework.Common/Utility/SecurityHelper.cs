@@ -1,4 +1,3 @@
-
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -39,7 +38,7 @@ namespace Stone.Framework.Common.Utility
 
         /// <summary>
         /// Receive the get value
-        /// </summary> 
+        /// </summary>
         /// <param name="key"></param>
         /// <param name="isSafeCheck">是否进行SQL安全检查</param>
         /// <returns></returns>
@@ -67,7 +66,7 @@ namespace Stone.Framework.Common.Utility
         /// <returns></returns>
         public static string RequestFormStr(string key)
         {
-            string str = HttpContext.Current.Request.Form[key];
+            var str = HttpContext.Current.Request.Form[key];
             return str.ExtensionIsNullOrEmpty() ? string.Empty : str.Trim().Replace("'", "''");
         }
 
@@ -78,7 +77,7 @@ namespace Stone.Framework.Common.Utility
         /// <returns></returns>
         public static int RequestQueryNum(string key)
         {
-            string str = HttpContext.Current.Request.QueryString[key];
+            var str = HttpContext.Current.Request.QueryString[key];
             return str.ExtensionIsNumeric() ? str.ExtensionToInt() : 0;
         }
 
@@ -89,7 +88,7 @@ namespace Stone.Framework.Common.Utility
         /// <returns></returns>
         public static float RequestQueryFloat(string key)
         {
-            string str = HttpContext.Current.Request.QueryString[key];
+            var str = HttpContext.Current.Request.QueryString[key];
             return str.ExtensionIsNumeric() ? str.ExtensionToFloat() : 0.0F;
         }
 
@@ -330,13 +329,13 @@ namespace Stone.Framework.Common.Utility
 
             var opt = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled;
 
-            var arrRegex = new[] 
-            {   
-                new Regex("\\s*<div>" + positiveLookahead1 + "(.*?)</div>\\s*", opt),   
-                new Regex("\\s*<div>" + positiveLookahead2 + "(.*?)</div>\\s*", opt),   
-                new Regex("\\s*<div>" + positiveLookahead3 + "(.*?)</div>\\s*", opt),   
-                new Regex("\\s*<div>" + positiveLookahead3 + "(.*?)</div>\\s*", opt),   
-                new Regex("\\s*<div>" + positiveLookahead4 + "(.*?)</div>\\s*", opt)   
+            var arrRegex = new[]
+            {
+                new Regex("\\s*<div>" + positiveLookahead1 + "(.*?)</div>\\s*", opt),
+                new Regex("\\s*<div>" + positiveLookahead2 + "(.*?)</div>\\s*", opt),
+                new Regex("\\s*<div>" + positiveLookahead3 + "(.*?)</div>\\s*", opt),
+                new Regex("\\s*<div>" + positiveLookahead3 + "(.*?)</div>\\s*", opt),
+                new Regex("\\s*<div>" + positiveLookahead4 + "(.*?)</div>\\s*", opt)
             };
 
             return arrRegex.Aggregate(html, (current, item) => item.Replace(current, string.Empty));
