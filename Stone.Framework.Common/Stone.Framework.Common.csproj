@@ -68,6 +68,19 @@
     <Compile Include="Utility\URLHelper.cs" />
     <Compile Include="Utility\UtilityHelper.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\ChnCharInfo.dll" />
+    <Content Include="bin\Debug\ChnCharInfo.XML" />
+    <Content Include="bin\Debug\EastAsiaNumericFormatter.dll" />
+    <Content Include="bin\Debug\EastAsiaNumericFormatter.xml" />
+    <Content Include="bin\Debug\Intelligencia.UrlRewriter.dll" />
+    <Content Include="bin\Debug\Microsoft.Office.Interop.Excel.dll" />
+    <Content Include="bin\Debug\Stone.Framework.Common.dll" />
+    <Content Include="bin\Debug\Stone.Framework.Common.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Intelligencia.UrlRewriter.dll.refresh" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
