@@ -65,7 +65,7 @@
     <Compile Include="Utility\RndHelper.cs" />
     <Compile Include="Utility\SecurityHelper.cs" />
     <Compile Include="Utility\SqlHelper.cs" />
-    <Compile Include="Utility\URLHelper.cs" />
+    <Compile Include="Utility\UrlHelper.cs" />
     <Compile Include="Utility\UtilityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
