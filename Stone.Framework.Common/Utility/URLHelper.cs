@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,7 +11,9 @@ namespace Stone.Framework.Common.Utility
         private const string Http = "http://";
         private const string RegexQuery = @"(?<=(\&|\?|^)({0})\=).*?(?=\&|$)";
 
-        private UrlHelper() { }
+        private UrlHelper()
+        {
+        }
 
         /// <summary>
         /// 返回当前完整主机头.http://www.baidu.com:8088
@@ -188,12 +188,10 @@ namespace Stone.Framework.Common.Utility
                     index = url.Length;
                 }
                 str = url.Substring(start, index - start);
-
             }
             catch (Exception)
             {
                 return string.Empty;
-
             }
             return str.ToLower();
         }
@@ -207,6 +205,7 @@ namespace Stone.Framework.Common.Utility
         {
             return Regex.Match(input, string.Format(RegexQuery, queryKey), RegexOptions.Singleline).Value.Trim();
         }
+
         /// <summary>
         /// 提取Url中Querystring指定键的值
         /// </summary>
@@ -255,6 +254,44 @@ namespace Stone.Framework.Common.Utility
                 o =>
                     (o.Value.StartsWith("?") && o.Value.EndsWith("&") ? "?" : "") +
                     (o.Value.StartsWith("&") && o.Value.EndsWith("&") ? "&" : ""));
+        }
+
+        /// <summary>
+        /// 获取搜索引擎蜘蛛名称
+        /// </summary>
+        public static string GetSearchEnginesName
+        {
+            get
+            {
+                if (HttpContext.Current.Request.UrlReferrer == null) return String.Empty;
+
+                string[] searchEngine = { "google", "yahoo", "msn", "baidu", "sogou", "sohu", "sina", "163", "lycos", "tom", "yisou", "iask", "soso", "gougou", "zhongsou" };
+                var tmpReferrer = HttpContext.Current.Request.UrlReferrer.ToString().ToLower();
+                return searchEngine.Any(t => tmpReferrer.IndexOf(t, StringComparison.Ordinal) >= 0) ? tmpReferrer : string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 根据URL获取文件名.如:http://sh.cdfcc.cn/pic/2432_090827222230181.jpg返回2432_090827222230181.jpg
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string GetUrlFileName(string url)
+        {
+            var groups = Regex.Match(url, "^(?i)http://.*/(.*)$", RegexOptions.IgnoreCase).Groups;
+            return groups[1].Value;
+        }
+
+        /// <summary>
+        /// 合并完整Url.如:http://bj.centanet.com/、/index.aspx合并成http://bj.centanet.com/index.aspx
+        /// </summary>
+        /// <param name="baseUrl"></param>
+        /// <param name="relativeUrl"></param>
+        /// <returns></returns>
+        public static string UrlCombine(string baseUrl, string relativeUrl)
+        {
+            Uri uri = null;
+            return Uri.TryCreate(new Uri(baseUrl), relativeUrl, out uri) ? uri.AbsoluteUri : string.Empty;
         }
     }
 }

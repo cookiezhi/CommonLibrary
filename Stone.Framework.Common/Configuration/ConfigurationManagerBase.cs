@@ -1,9 +1,5 @@
 ﻿using Stone.Framework.Common.Utility;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
 
@@ -41,11 +37,11 @@ namespace Stone.Framework.Common.Configuration
             }
         }
 
-        #endregion
+        #endregion 异常处理
 
         private Object m_SyncObject;
 
-        public ConfigurationManagerBase()
+        protected ConfigurationManagerBase()
         {
             m_SyncObject = new object();
             m_CacheManager = CreateCache();
@@ -58,17 +54,18 @@ namespace Stone.Framework.Common.Configuration
 
         #region cache manipulation
 
-        private T LoadConfiguration<T>(String cacheKey, String configFile) where T : class
+        private T LoadConfiguration<T>(string cacheKey, string configFile, bool needLog) where T : class
         {
-            T config = ObjectXmlSerializer.LoadFromXml<T>(configFile);
-            if (configFile != null)
+            var config = ObjectXmlSerializer.LoadFromXml<T>(configFile, needLog);
+            if (config != null)
             {
-                AddToCache(cacheKey, config, configFile);
+                AddToCache(cacheKey, config, configFile, needLog);
             }
             else
             {
                 throw new LoadFileException(typeof(T).Name, configFile);
             }
+
             return config;
         }
 
@@ -78,11 +75,12 @@ namespace Stone.Framework.Common.Configuration
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="depedencyFile"></param>
-        private void AddToCache(String key, object value, String depedencyFile)
+        /// <param name="needLog"></param>
+        private void AddToCache(string key, object value, string depedencyFile, bool needLog)
         {
-            CacheItemRemovedCallback callBack = null;
-            m_CacheManager.Add(
-                key, value, new CacheDependency(depedencyFile), Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, callBack);
+            var callBack = needLog ? new CacheItemRemovedCallback(LogCacheItemRemoved) : null;
+            m_CacheManager.Add(key, value, new CacheDependency(depedencyFile), Cache.NoAbsoluteExpiration,
+                Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, callBack);
         }
 
         /// <summary>
@@ -94,28 +92,47 @@ namespace Stone.Framework.Common.Configuration
         /// <returns></returns>
         protected T GetFromCache<T>(String cacheKey, String key) where T : class
         {
-            String realKey = cacheKey ?? key;
-            T response = m_CacheManager[realKey] as T;
-            if (response == null)
+            var realKey = cacheKey ?? key;
+            var response = m_CacheManager[realKey] as T;
+            if (response != null) return response;
+            lock (m_SyncObject)
             {
-                lock (m_SyncObject)
+                var configFile = ConfigurationHelper.GetConfigurationFile(key);
+
+                if (!configFile.ExtensionIsNullOrEmpty())
                 {
-                    response = m_CacheManager[realKey] as T;
-
-                    if (response == null)
-                    {
-                        String configFile = ConfigurationHelper.GetConfigurationFile(key);
-
-                        if (!String.IsNullOrEmpty(configFile))
-                        {
-                            response = LoadConfiguration<T>(realKey, configFile);
-                        }
-                    }
+                    response = LoadConfiguration<T>(realKey, configFile, true);
                 }
             }
             return response;
         }
 
-        #endregion
+        protected T GetFromCache<T>(String cacheKey, String key, bool needLog) where T : class
+        {
+            var realKey = cacheKey ?? key;
+            var res = m_CacheManager[realKey] as T;
+            if (res != null) return res;
+            lock (m_SyncObject)
+            {
+                var configFile = ConfigurationHelper.GetConfigurationFile(key);
+
+                if (!configFile.ExtensionIsNullOrEmpty())
+                {
+                    res = LoadConfiguration<T>(realKey, configFile, needLog);
+                }
+            }
+            return res;
+        }
+
+        #endregion cache manipulation
+
+        #region Logging
+
+        private static void LogCacheItemRemoved(string key, object obj, CacheItemRemovedReason reason)
+        {
+            //LoggerFactory.CreateLogger().LogEvent("Framework.Configuration", 1, key, obj, reason);
+        }
+
+        #endregion Logging
     }
 }

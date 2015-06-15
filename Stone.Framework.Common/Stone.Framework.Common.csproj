@@ -51,6 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collection\CaseInsensitiveStringEqualityComparer.cs" />
+    <Compile Include="Collection\FastPropertyComparer.cs" />
+    <Compile Include="Collection\IKeyedObject.cs" />
+    <Compile Include="Collection\IKeyedObjectCollection.cs" />
+    <Compile Include="Collection\KeyedObjectCollection.cs" />
     <Compile Include="Configuration\ConfigurationManagerBase.cs" />
     <Compile Include="Logging\EmptyLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
