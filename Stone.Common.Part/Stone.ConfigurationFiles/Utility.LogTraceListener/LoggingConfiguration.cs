@@ -90,8 +90,6 @@ namespace Stone.ConfigurationFiles.Utility.LogTraceListener
         {
             PrepareEmailLogEntryList();
 
-            bool res;
-
             EventHashtable eventHashtable;
             var category = string.Empty;
             foreach (var item in logEntry.Categories)
@@ -100,7 +98,7 @@ namespace Stone.ConfigurationFiles.Utility.LogTraceListener
                 break;
             }
 
-            res = _logHashtable.TryGetValue(category, out eventHashtable);
+            var res = _logHashtable.TryGetValue(category, out eventHashtable);
             return res && eventHashtable.ContainsKey(logEntry.EventId);
         }
 
@@ -138,6 +136,46 @@ namespace Stone.ConfigurationFiles.Utility.LogTraceListener
             }
         }
     }
+
+    #region LogsForEmail
+
+    public class LogsForEmail
+    {
+        private List<LoggingEntryInfo> m_LogEntryList;
+        private KeyedObjectCollection<string, LogCategoryForEmail> m_LogCategoryForEmailList;
+
+        [XmlElement("logCategory")]
+        public KeyedObjectCollection<string, LogCategoryForEmail> LogCategoryForEmailList
+        {
+            get { return m_LogCategoryForEmailList; }
+            set { m_LogCategoryForEmailList = value; }
+        }
+
+        [XmlIgnore()]
+        public List<LoggingEntryInfo> LogEntryList
+        {
+            get
+            {
+                if (m_LogEntryList != null) return m_LogEntryList;
+                m_LogEntryList = new List<LoggingEntryInfo>();
+                foreach (var category in m_LogCategoryForEmailList)
+                {
+                    foreach (int eventId in category.EventIdList)
+                    {
+                        var entry = new LoggingEntryInfo
+                        {
+                            Category = category.Name,
+                            EventId = eventId
+                        };
+                        m_LogEntryList.Add(entry);
+                    }
+                }
+                return m_LogEntryList;
+            }
+        }
+    }
+
+    #endregion LogsForEmail
 
     #region EmailSetting
 
@@ -216,46 +254,6 @@ namespace Stone.ConfigurationFiles.Utility.LogTraceListener
     }
 
     #endregion LoggingEntryInfo
-
-    #region LogsForEmail
-
-    public class LogsForEmail
-    {
-        private List<LoggingEntryInfo> m_LogEntryList;
-        private KeyedObjectCollection<string, LogCategoryForEmail> m_LogCategoryForEmailList;
-
-        [XmlElement("logCategory")]
-        public KeyedObjectCollection<string, LogCategoryForEmail> LogCategoryForEmailList
-        {
-            get { return m_LogCategoryForEmailList; }
-            set { m_LogCategoryForEmailList = value; }
-        }
-
-        [XmlIgnore()]
-        public List<LoggingEntryInfo> LogEntryList
-        {
-            get
-            {
-                if (m_LogEntryList != null) return m_LogEntryList;
-                m_LogEntryList = new List<LoggingEntryInfo>();
-                foreach (var category in m_LogCategoryForEmailList)
-                {
-                    foreach (int eventId in category.EventIdList)
-                    {
-                        var entry = new LoggingEntryInfo
-                                                 {
-                                                     Category = category.Name,
-                                                     EventId = eventId
-                                                 };
-                        m_LogEntryList.Add(entry);
-                    }
-                }
-                return m_LogEntryList;
-            }
-        }
-    }
-
-    #endregion LogsForEmail
 
     #region LogCategoryForEmail
 
