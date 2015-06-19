@@ -1,11 +1,8 @@
 ﻿using Stone.Framework.Common.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Stone.Framework.Common.Utility
@@ -13,6 +10,7 @@ namespace Stone.Framework.Common.Utility
     public class ObjectXmlSerializer
     {
         #region LoadFromXml
+
         /// <summary>
         /// deserialize an object from a file.
         /// </summary>
@@ -60,9 +58,11 @@ namespace Stone.Framework.Common.Utility
                 }
             }
         }
-        #endregion
+
+        #endregion LoadFromXml
 
         #region ToXml
+
         public static String ToStringXmlMessage<T>(T t, Boolean needLog) where T : class
         {
             StringWriter writer = null;
@@ -136,9 +136,11 @@ namespace Stone.Framework.Common.Utility
             {
             }
         }
-        #endregion
 
-        #region  FromXML
+        #endregion ToXml
+
+        #region FromXML
+
         public static T LoadFromXmlMessage<T>(String xmlMessage, Boolean needLog) where T : class
         {
             StringReader reader = null;
@@ -191,9 +193,10 @@ namespace Stone.Framework.Common.Utility
             }
         }
 
-        #endregion
+        #endregion FromXML
 
         #region Logging
+
         private const String LogCategory = "Framework.ObjectXmlSerializer";
         private const Int32 LogEventLoadFileException = 1;
         private const Int32 LogEventXmlDeserializeException = 2;
@@ -216,6 +219,7 @@ namespace Stone.Framework.Common.Utility
         {
             LoggerFactory.CreateLogger().LogEvent(LogCategory, LogEventXmlSerializeException, objectTypeName, ex.ToString());
         }
-        #endregion
+
+        #endregion Logging
     }
 }

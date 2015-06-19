@@ -1,4 +1,5 @@
 ﻿using Stone.ConfigurationFiles.Utility.Logging;
+using Stone.ConfigurationFiles.Utility.LogTraceListener;
 using Stone.Framework.Common.Configuration;
 
 namespace Stone.ConfigurationFiles
@@ -33,7 +34,25 @@ namespace Stone.ConfigurationFiles
                 }
             }
 
-            //public LoggingConfiguration
+            public LoggingConfiguration LoggingConfiguration
+            {
+                get
+                {
+                    return GetFromCache<LoggingConfiguration>(CACHEKEY_SECTION_NAME_LOGGING_CONFIG, SECTION_NAME_LOGGING_CONFIG);
+                }
+            }
+        }
+
+        private static readonly InternalConfiguration Config = InternalConfiguration.GetInstance();
+
+        public static LogEntryConfiguration LogEntryConfigurationManager
+        {
+            get { return Config.LogEntryConfiguration; }
+        }
+
+        public static LoggingConfiguration LoggingConfigurationManager
+        {
+            get { return Config.LoggingConfiguration; }
         }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D4676B0D-7885-4C56-B1BE-C51BBDDC0E5E}</ProjectGuid>
+    <ProjectGuid>{DDAD60D1-1DA6-4D43-A575-A69744C0D5CD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stone.ConfigurationFiles</RootNamespace>
-    <AssemblyName>Stone.ConfigurationFiles</AssemblyName>
+    <RootNamespace>Stone.Website.Utility.LogTraceListener</RootNamespace>
+    <AssemblyName>Stone.Website.Utility.LogTraceListener</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,11 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedLib\EnterpriseLibrary5.0\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedLib\EnterpriseLibrary5.0\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,42 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationManager.cs" />
+    <Compile Include="LogEntryDispatcher.cs" />
+    <Compile Include="LogEntryFileWriter.cs" />
+    <Compile Include="LogEntryFormatter.cs" />
+    <Compile Include="LogEntryQueueManager.cs" />
+    <Compile Include="LogEventManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility.Logging\LogEntryConfiguration.cs" />
-    <Compile Include="Utility.LogTraceListener\LoggingConfiguration.cs" />
+    <Compile Include="QueuedTraceListener.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Stone.Framework.Common\Stone.Framework.Common.csproj">
-      <Project>{f363cc27-41fd-4fbb-a88e-b9b2d7906edb}</Project>
-      <Name>Stone.Framework.Common</Name>
+    <ProjectReference Include="..\..\Stone.Common.Part\Stone.ConfigurationFiles\Stone.ConfigurationFiles.csproj">
+      <Project>{d4676b0d-7885-4c56-b1be-c51bbddc0e5e}</Project>
+      <Name>Stone.ConfigurationFiles</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Release\" />
-    <Folder Include="Framework.Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="bin\Debug\ChnCharInfo.dll" />
-    <Content Include="bin\Debug\ChnCharInfo.xml" />
-    <Content Include="bin\Debug\EastAsiaNumericFormatter.dll" />
-    <Content Include="bin\Debug\EastAsiaNumericFormatter.xml" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.xml" />
-    <Content Include="bin\Debug\Microsoft.Practices.ServiceLocation.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.ServiceLocation.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.Interception.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.Interception.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.pdb" />
-    <Content Include="bin\Debug\Stone.ConfigurationFiles.dll" />
-    <Content Include="bin\Debug\Stone.ConfigurationFiles.pdb" />
-    <Content Include="bin\Debug\Stone.Framework.Common.dll" />
-    <Content Include="bin\Debug\Stone.Framework.Common.pdb" />
+    <ProjectReference Include="..\Stone.Website.Utility.Logging\Stone.Website.Utility.Logging.csproj">
+      <Project>{e8771f5e-2cf1-4d84-92c5-bb7c80a86841}</Project>
+      <Name>Stone.Website.Utility.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

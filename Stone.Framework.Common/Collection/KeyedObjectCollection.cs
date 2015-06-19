@@ -11,6 +11,11 @@ namespace Stone.Framework.Common.Collection
         private readonly List<TItem> _entries;
         private readonly IComparer _comparer;
 
+        public KeyedObjectCollection()
+            : this(null)
+        {
+        }
+
         public KeyedObjectCollection(IEqualityComparer<TKey> equalityComaprer)
         {
             if (equalityComaprer == null)

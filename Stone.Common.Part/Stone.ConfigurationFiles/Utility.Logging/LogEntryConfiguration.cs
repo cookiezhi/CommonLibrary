@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace Stone.ConfigurationFiles.Utility.Logging
 {
-    [XmlRoot("logEntryConfiguratioin")]
+    [XmlRoot("logEntryConfiguratioin", Namespace = "http://www.centaline.com/Website/Logging")]
     public class LogEntryConfiguration
     {
         [XmlElement("logCategory")]
@@ -16,25 +16,51 @@ namespace Stone.ConfigurationFiles.Utility.Logging
         }
     }
 
+    /// <summary>
+    /// Summary of this class.
+    /// </summary>
     public class LogCategoryInfo
     {
         [XmlAttribute("name")]
-        public string CategoryName { get; set; }
+        public string CategoryName
+        {
+            get;
+            set;
+        }
 
         [XmlElement("log")]
-        public KeyedObjectCollection<int, LogEntryInfo> LogEntryList { get; set; }
+        public KeyedObjectCollection<int, LogEntryInfo> LogEntryList
+        {
+            get;
+            set;
+        }
     }
 
+    /// <summary>
+    /// Summary of this class.
+    /// </summary>
     public class LogEntryInfo : IKeyedObject<int>
     {
         [XmlAttribute("eventId")]
-        public int EventId { get; set; }
+        public int EventId
+        {
+            get;
+            set;
+        }
 
         [XmlAttribute("severity")]
-        public TraceEventType Severity { get; set; }
+        public TraceEventType Severity
+        {
+            get;
+            set;
+        }
 
-        [XmlAttribute("message")]
-        public string Message { get; set; }
+        [XmlElement("message")]
+        public string Message
+        {
+            get;
+            set;
+        }
 
         #region IKeyedObject<int> Members
 

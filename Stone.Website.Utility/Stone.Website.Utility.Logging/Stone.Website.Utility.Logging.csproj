@@ -30,20 +30,59 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Stone.Framework.Common">
-      <HintPath>..\..\Stone.Framework.Common\bin\Debug\Stone.Framework.Common.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\..\ReferencedLib\EnterpriseLibrary5.0\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
+      <HintPath>..\..\ReferencedLib\EnterpriseLibrary5.0\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Stone.Common.Part\Stone.ConfigurationFiles\Stone.ConfigurationFiles.csproj">
+      <Project>{D4676B0D-7885-4C56-B1BE-C51BBDDC0E5E}</Project>
+      <Name>Stone.ConfigurationFiles</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Stone.Framework.Common\Stone.Framework.Common.csproj">
+      <Project>{f363cc27-41fd-4fbb-a88e-b9b2d7906edb}</Project>
+      <Name>Stone.Framework.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\ChnCharInfo.dll" />
+    <Content Include="bin\Debug\ChnCharInfo.xml" />
+    <Content Include="bin\Debug\EastAsiaNumericFormatter.dll" />
+    <Content Include="bin\Debug\EastAsiaNumericFormatter.xml" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.pdb" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.pdb" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.xml" />
+    <Content Include="bin\Debug\Microsoft.Practices.ServiceLocation.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.ServiceLocation.pdb" />
+    <Content Include="bin\Debug\Microsoft.Practices.Unity.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.Unity.Interception.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.Unity.Interception.pdb" />
+    <Content Include="bin\Debug\Microsoft.Practices.Unity.pdb" />
+    <Content Include="bin\Debug\Stone.ConfigurationFiles.dll" />
+    <Content Include="bin\Debug\Stone.ConfigurationFiles.pdb" />
+    <Content Include="bin\Debug\Stone.Framework.Common.dll" />
+    <Content Include="bin\Debug\Stone.Framework.Common.pdb" />
+    <Content Include="bin\Debug\Stone.Website.Utility.Logging.dll" />
+    <Content Include="bin\Debug\Stone.Website.Utility.Logging.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
