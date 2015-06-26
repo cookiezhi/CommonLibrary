@@ -63,17 +63,7 @@
     <Content Include="bin\Debug\EastAsiaNumericFormatter.dll" />
     <Content Include="bin\Debug\EastAsiaNumericFormatter.xml" />
     <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml" />
     <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.xml" />
-    <Content Include="bin\Debug\Microsoft.Practices.ServiceLocation.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.ServiceLocation.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.Interception.dll" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.Interception.pdb" />
-    <Content Include="bin\Debug\Microsoft.Practices.Unity.pdb" />
     <Content Include="bin\Debug\Stone.ConfigurationFiles.dll" />
     <Content Include="bin\Debug\Stone.ConfigurationFiles.pdb" />
     <Content Include="bin\Debug\Stone.Framework.Common.dll" />

@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="DataCommandManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringSearchTestTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Stone.Framework.Common\Stone.Framework.Common.csproj">

@@ -64,12 +64,14 @@
     <Compile Include="Utility\AntiXssEncoder.cs" />
     <Compile Include="Utility\AuthCode.cs" />
     <Compile Include="Utility\ConfigurationHelper.cs" />
+    <Compile Include="Utility\EncryptDecrypt.cs" />
     <Compile Include="Utility\ExtensionMethod.cs" />
     <Compile Include="Utility\FileHelper.cs" />
     <Compile Include="Utility\ObjectXmlSerializer.cs" />
     <Compile Include="Utility\RndHelper.cs" />
     <Compile Include="Utility\SecurityHelper.cs" />
     <Compile Include="Utility\SqlHelper.cs" />
+    <Compile Include="Utility\StringSearch.cs" />
     <Compile Include="Utility\UrlHelper.cs" />
     <Compile Include="Utility\UtilityHelper.cs" />
   </ItemGroup>
