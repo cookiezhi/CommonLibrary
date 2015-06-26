@@ -394,5 +394,452 @@ namespace Stone.Framework.Common.Utility
             html = html.Replace("//]]>", "");
             return html;
         }
+
+        /// <summary>
+        /// 清除UBB标签
+        /// </summary>
+        /// <param name="sDetail"></param>
+        /// <returns></returns>
+        public static String UBBFilter(String html)
+        {
+            return Regex.Replace(html, @"\[[^\]]*?\]", String.Empty, RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// 将文本中所有的HTML标记给移除掉,只保留存文本
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public static String HTMLFilter(Object html)
+        {
+            String input = html as String;
+            if (String.IsNullOrEmpty(input))
+            {
+                return String.Empty;
+            }
+
+            input = new Regex(@"<!--(.|\n)*?-->", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, String.Empty);
+            input = new Regex(@"<script[^>]*>(.|\n)*?<\/script>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, String.Empty);
+            input = new Regex(@"<style[^>]*>(.|\n)*?<\/style>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, " ");
+            input = new Regex("\\son[a-zA-Z]+=[\\\"|\\']?[^\\'\\\"]*[\\\"|\\']?", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, String.Empty);
+            input = new Regex("</?[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, String.Empty);
+            input = new Regex("&[a-zA-Z]+;", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, String.Empty);
+            Regex regex = new Regex(@"\s\s{1,}", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            return regex.Replace(input, "");
+        }
+
+        /// <summary>
+        /// 仅将移除一些敏感的HTML标签元素.例如:iframe、script、Object、javascript等.
+        /// </summary>
+        /// <param name="htmltext"></param>
+        /// <returns></returns>
+        public static String FilterScript(Object html)
+        {
+            String input = html as String;
+            if (String.IsNullOrEmpty(input))
+            {
+                return String.Empty;
+            }
+
+            input = new Regex(@"<script[^>]*>(.|\n)*<\/script>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, "");
+            input = new Regex("<meta[^>]*>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, "");
+            input = new Regex(@"<!--[^>]*>(.|\n)*<\-->", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, "");
+            input = new Regex(@"<iframe[^>]*>(.|\n)*<\/iframe>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, "");
+            input = new Regex(@"<Object[^>]*>(.|\n)*<\/Object>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase).Replace(input, "");
+            Regex regex = new Regex("javascript:", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            return regex.Replace(input, "javascript :");
+        }
+
+        /// <summary>
+        /// 移除HTML文档中的空格
+        /// </summary>
+        /// <param name="contentInBuffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        public static String RemoveWhitespace(String contentInBuffer)
+        {
+            Regex tabsRe = new Regex("\\t", RegexOptions.Compiled | RegexOptions.Multiline);
+            Regex carriageReturnRe = new Regex(">[\\s]*\\r\\n[\\s]*<", RegexOptions.Compiled | RegexOptions.Multiline);
+            Regex carriageReturnSafeRe = new Regex("\\r\\n\\s", RegexOptions.Compiled | RegexOptions.Multiline);
+            Regex multipleSpaces = new Regex("  ", RegexOptions.Compiled | RegexOptions.Multiline);
+            Regex spaceBetweenTags = new Regex(">\\s<", RegexOptions.Compiled | RegexOptions.Multiline);
+
+            //去掉<script>前的换行
+            Regex spaceScript = new Regex(">([\\s]*)<script ", RegexOptions.Compiled | RegexOptions.Multiline);
+
+            // Strip out all whitespace... kill all tabs, replace carriage returns with a space, and compress multiple spaces
+            contentInBuffer = tabsRe.Replace(contentInBuffer, string.Empty);
+
+            contentInBuffer = carriageReturnRe.Replace(contentInBuffer, "><");
+            contentInBuffer = carriageReturnSafeRe.Replace(contentInBuffer, " ");
+
+            while (multipleSpaces.IsMatch(contentInBuffer))
+                contentInBuffer = multipleSpaces.Replace(contentInBuffer, " ");
+
+            contentInBuffer = spaceBetweenTags.Replace(contentInBuffer, "><");
+
+            //去掉<script>前的换行
+            contentInBuffer = spaceScript.Replace(contentInBuffer, "><script ");
+            contentInBuffer = contentInBuffer.Replace("\r\n<!DOCTYPE", "<!DOCTYPE");
+
+            //去掉<title></title>换行
+            contentInBuffer = contentInBuffer.Replace("<title>\r\n", "<title>");
+            contentInBuffer = contentInBuffer.Replace("\r\n</title>", "</title>");
+            return contentInBuffer;
+        }
+
+        /// <summary>
+        /// 移除Html标记
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static String RemoveHtml(String content)
+        {
+            content = Regex.Replace(content, @"<[^>]*>", String.Empty, RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, @"&ldquo;", String.Empty, RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, @"&rdquo;", String.Empty, RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, @"&nbsp;", String.Empty, RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, @"<br/>", String.Empty, RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, @"<br>", String.Empty, RegexOptions.IgnoreCase);
+            return Regex.Replace(content, @"&mdash;", String.Empty, RegexOptions.IgnoreCase);
+
+            //content = Regex.Replace(content, @"&(quot|#34);", "\"", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&(amp|#38);", "&", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&(lt|#60);", "<", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&(gt|#62);", ">", RegexOptions.IgnoreCase);
+            //return Regex.Replace(content, @"&(nbsp|#160);", " ", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&(iexcl|#161);", "\xa1", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&(cent|#162);", "\xa2", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&(pound|#163);", "\xa3", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&(copy|#169);", "\xa9", RegexOptions.IgnoreCase);
+            //content = Regex.Replace(content, @"&#(\d+);", "", RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// 过滤HTML中的不安全标签
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static String RemoveUnsafeHtml(String content)
+        {
+            content = Regex.Replace(content, @"(\<|\s+)o([a-z]+\s?=)", "$1$2", RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, @"(script|frame|form|meta|behavior|style)([\s|:|>])+", "$1.$2", RegexOptions.IgnoreCase);
+            return content;
+        }
+
+        /// <summary>
+        /// 从HTML中获取文本,保留br,p,img
+        /// </summary>
+        /// <param name="HTML"></param>
+        /// <returns></returns>
+        public static String GetTextFromHTML(String html)
+        {
+            Regex regex = new Regex(@"</?(?!br|/?p|img)[^>]*>", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+            return regex.Replace(html, "");
+        }
+
+        /// <summary>
+        /// UBB转HTML
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static String UBBToHTML(String str)
+        {
+            Regex r;
+            Match m;
+            str = Regex.Replace(str, " ", "&nbsp;", RegexOptions.IgnoreCase);   //处理空格
+            str = Regex.Replace(str, "'", "’", RegexOptions.IgnoreCase);       //单引号
+            str = Regex.Replace(str, "\"", "&quot;", RegexOptions.IgnoreCase);  //双引号
+            str = Regex.Replace(str, "<", "&lt;", RegexOptions.IgnoreCase);     //html标记符
+            str = Regex.Replace(str, ">", "&gt;", RegexOptions.IgnoreCase);     //html标记符
+
+            #region 处理换行
+
+            //处理换行，在每个新行的前面添加两个全角空格
+            r = new Regex(@"(\r\n((&nbsp;)|　)+)(?<正文>\S+)", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(), "<BR>　　" + m.Groups["正文"].ToString());
+            }
+            //处理换行，在每个新行的前面添加两个全角空格
+            str = str.Replace("\r\n", "<br/>");
+
+            #endregion 处理换行
+
+            str = Regex.Replace(str, @"(\[b\])(.+?)(\[\/b\])", "<b>$2</b>", RegexOptions.IgnoreCase);                   //[b]
+            str = Regex.Replace(str, @"(\[i\])([ \S\t]*?)(\[\/i\])", "<i>$2</i>", RegexOptions.IgnoreCase);             //[i]
+            str = Regex.Replace(str, @"(\[u\])([ \S\t]*?)(\[\/u\])", "<u>$2</u>", RegexOptions.IgnoreCase);             //[u]
+            str = Regex.Replace(str, @"((\r\n)*\[p\])(.*?)((\r\n)*\[\/p\])", "<p>$3</p>", RegexOptions.IgnoreCase);     //[p]
+            str = Regex.Replace(str, @"(\[sup\])([ \S\t]*?)(\[\/sup\])", "<sup>$2</sup>", RegexOptions.IgnoreCase);     //[sup]
+            str = Regex.Replace(str, @"(\[sub\])([ \S\t]*?)(\[\/sub\])", "<sub>$2</sub>", RegexOptions.IgnoreCase);     //[sub]
+            str = Regex.Replace(str, @"(\[del\])([ \S\t]*?)(\[\/del\])", "<del>$2</del>", RegexOptions.IgnoreCase);     //[del]
+            str = Regex.Replace(str, @"(\[url\])([ \S\t]*?)(\[\/url\])", "<a href='$2' target='_blank'>$2</a>", RegexOptions.IgnoreCase);               //[url=http://www.sohu.com][/url]
+            str = Regex.Replace(str, @"(\[url=([ \S\t]+)\])([ \S\t]*?)(\[\/url\])", "<a href='$2' target='_blank'>$3</a>", RegexOptions.IgnoreCase);     //[url=http://www.sohu.com]sohu[/url]
+            str = Regex.Replace(str, @"(\[email\])([ \S\t]*?)(\[\/email\])", "<a href='mailto:' target='_blank'>$2</a>", RegexOptions.IgnoreCase);      //[email]
+            str = Regex.Replace(str, @"(\[email=([ \S\t]+)\])([ \S\t]*?)(\[\/email\])", "<a href='mailto:$2' target='_blank'>$3</a>", RegexOptions.IgnoreCase);    //[email]
+            str = Regex.Replace(str, @"(\[size=([1-7])\])([ \S\t]*?)(\[\/size\])", "<font size='$2'>$3</font>", RegexOptions.IgnoreCase);       //[size]
+            str = Regex.Replace(str, @"(\[color=([\S]+)\])([ \S\t]*?)(\[\/color\])", "<font color='$2'>$3</font>", RegexOptions.IgnoreCase);        //[color=x][/color]
+            str = Regex.Replace(str, @"(\[font=([\S]+)\])([ \S\t]*?)(\[\/font\])", "<font face='$2'>$3</font>", RegexOptions.IgnoreCase);           //[font=x][/font]
+            str = Regex.Replace(str, @"(\[align=([\S]+)\])(.+?)(\[\/align\])", "<p align='$2'>$3</p>", RegexOptions.IgnoreCase);           //[align=x][/align]
+            str = Regex.Replace(str, @"(\[img\])(http|https|ftp):\/\/([ \S\t]*?)(\[\/img\])", "<a onfocus='this.blur()' href='$2://$3' target='_blank'><img src=$2://$3 border='0' alt='按此在新窗口浏览图片' onload='javascript:if(screen.width-333<this.width)this.width=screen.width-333' /></a>", RegexOptions.IgnoreCase);   //[img][/img]
+            str = Regex.Replace(str, @"(\[img=(http|https|ftp):\/\/([ \S\t]*?)])(\[\/img\])", "<a onfocus='this.blur()' href='$2://$3' target='_blank'><img src=$2://$3 border='0' alt='按此在新窗口浏览图片' onload='javascript:if(screen.width-333<this.width)this.width=screen.width-333' /></a>", RegexOptions.IgnoreCase);   //[img][/img]
+            str = Regex.Replace(str, @"(\[image\])([ \S\t]*?)(\[\/image\])", "<img src='$2' border='0' align='middle' /><br>", RegexOptions.IgnoreCase);        //[image][/image]
+
+            #region 处理图片链接
+
+            //处理图片链接
+            r = new Regex("\\[picture\\](\\d+?)\\[\\/picture\\]", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<A href=\"ShowImage.aspx?Type=ALL&Action=forumImage&ImageID=" + m.Groups[1].ToString() +
+                 "\" target=\"_blank\"><IMG border=0 Title=\"点击打开新窗口查看\" src=\"ShowImage.aspx?Action=forumImage&ImageID=" + m.Groups[1].ToString() +
+                 "\"></A>");
+            }
+
+            #endregion 处理图片链接
+
+            #region 处[H=x][/H]标记
+
+            //处[H=x][/H]标记
+            r = new Regex(@"(\[H=([1-6])\])([ \S\t]*?)(\[\/H\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<H" + m.Groups[2].ToString() + ">" +
+                 m.Groups[3].ToString() + "</H" + m.Groups[2].ToString() + ">");
+            }
+
+            #endregion 处[H=x][/H]标记
+
+            #region 处理[list=x][*][/list]
+
+            //处理[list=x][*][/list]
+            r = new Regex(@"(\[list(=(A|a|I|i| ))?\]([ \S\t]*)\r\n)((\[\*\]([ \S\t]*\r\n))*?)(\[\/list\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                String strLI = m.Groups[5].ToString();
+                Regex rLI = new Regex(@"\[\*\]([ \S\t]*\r\n?)", RegexOptions.IgnoreCase);
+                Match mLI;
+                for (mLI = rLI.Match(strLI); mLI.Success; mLI = mLI.NextMatch())
+                {
+                    strLI = strLI.Replace(mLI.Groups[0].ToString(), "<LI>" + mLI.Groups[1]);
+                }
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<UL TYPE=\"" + m.Groups[3].ToString() + "\"><B>" + m.Groups[4].ToString() + "</B>" +
+                 strLI + "</UL>");
+            }
+
+            #endregion 处理[list=x][*][/list]
+
+            #region 处[SHADOW=x][/SHADOW]标记
+
+            //处[SHADOW=x][/SHADOW]标记
+            r = new Regex(@"(\[SHADOW=)(\d*?),(#*\w*?),(\d*?)\]([\S\t]*?)(\[\/SHADOW\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<TABLE WIDTH=" + m.Groups[2].ToString() + "  STYLE=FILTER:SHADOW(COLOR=" + m.Groups[3].ToString() + ", STRENGTH=" + m.Groups[4].ToString() + ")>" +
+                 m.Groups[5].ToString() + "</TABLE>");
+            }
+
+            #endregion 处[SHADOW=x][/SHADOW]标记
+
+            #region 处[glow=x][/glow]标记
+
+            //处[glow=x][/glow]标记
+            r = new Regex(@"(\[glow=)(\d*?),(#*\w*?),(\d*?)\]([\S\t]*?)(\[\/glow\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<TABLE WIDTH=" + m.Groups[2].ToString() + "  STYLE=FILTER:GLOW(COLOR=" + m.Groups[3].ToString() + ", STRENGTH=" + m.Groups[4].ToString() + ")>" +
+                 m.Groups[5].ToString() + "</TABLE>");
+            }
+
+            #endregion 处[glow=x][/glow]标记
+
+            #region 处[center][/center]标记
+
+            r = new Regex(@"(\[center\])([ \S\t]*?)(\[\/center\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(), "<CENTER>" + m.Groups[2].ToString() + "</CENTER>");
+            }
+
+            #endregion 处[center][/center]标记
+
+            #region 处[em]标记
+
+            /*
+            r = new Regex(@"(\[em([\S\t]*?)\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(), "<img src=" + ApplicationRootPath + "/ubb/images/post/pic/" + m.Groups[2].ToString() + ".gif border=0 align=middle>");
+            }*/
+
+            #endregion 处[em]标记
+
+            #region 处[flash=x][/flash]标记
+
+            //处[mp=x][/mp]标记
+            r = new Regex(@"(\[flash=)(\d*?),(\d*?)\]([\S\t]*?)(\[\/flash\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<a href=" + m.Groups[4].ToString() + " TARGET=_blank><IMG SRC=images/post/swf.gif border=0 alt=点击开新窗口欣赏该FLASH动画!> [全屏欣赏]</a><br><br><OBJECT codeBase=http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0 classid=clsid:D27CDB6E-AE6D-11cf-96B8-444553540000 width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + "><PARAM NAME=movie VALUE=" + m.Groups[4].ToString() + "><PARAM NAME=quality VALUE=high><param name=menu value=false><embed src=" + m.Groups[4].ToString() + " quality=high menu=false pluginspage=http://www.macromedia.com/go/getflashplayer type=application/x-shockwave-flash width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + ">" + m.Groups[4].ToString() + "</embed></OBJECT>");
+            }
+
+            #endregion 处[flash=x][/flash]标记
+
+            #region 处[dir=x][/dir]标记
+
+            //处[dir=x][/dir]标记
+            r = new Regex(@"(\[dir=)(\d*?),(\d*?)\]([\S\t]*?)(\[\/dir\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<Object classid=clsid:166B1BCA-3F9C-11CF-8075-444553540000 codebase=http://download.macromedia.com/pub/shockwave/cabs/director/sw.cab#version=7,0,2,0 width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + "><param name=src value=" + m.Groups[4].ToString() + "><embed src=" + m.Groups[4].ToString() + " pluginspage=http://www.macromedia.com/shockwave/download/ width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + "></embed></Object>");
+            }
+
+            #endregion 处[dir=x][/dir]标记
+
+            #region 处[rm=x][/rm]标记
+
+            //处[rm=x][/rm]标记
+            r = new Regex(@"(\[rm=)(\d*?),(\d*?)\]([\S\t]*?)(\[\/rm\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<OBJECT classid=clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA class=OBJECT id=RAOCX width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + "><PARAM NAME=SRC VALUE=" + m.Groups[4].ToString() + "><PARAM NAME=CONSOLE VALUE=Clip1><PARAM NAME=CONTROLS VALUE=imagewindow><PARAM NAME=AUTOSTART VALUE=true></OBJECT><br><OBJECT classid=CLSID:CFCDAA03-8BE4-11CF-B84B-0020AFBBCCFA height=32 id=video2 width=" + m.Groups[2].ToString() + "><PARAM NAME=SRC VALUE=" + m.Groups[4].ToString() + "><PARAM NAME=AUTOSTART VALUE=-1><PARAM NAME=CONTROLS VALUE=controlpanel><PARAM NAME=CONSOLE VALUE=Clip1></OBJECT>");
+            }
+
+            #endregion 处[rm=x][/rm]标记
+
+            #region 处[mp=x][/mp]标记
+
+            //处[mp=x][/mp]标记
+            r = new Regex(@"(\[mp=)(\d*?),(\d*?)\]([\S\t]*?)(\[\/mp\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<Object align=middle classid=CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95 class=OBJECT id=MediaPlayer width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + " ><param name=ShowStatusBar value=-1><param name=Filename value=" + m.Groups[4].ToString() + "><embed type=application/x-oleobject codebase=http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701 flename=mp src=" + m.Groups[4].ToString() + "  width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + "></embed></Object>");
+            }
+
+            #endregion 处[mp=x][/mp]标记
+
+            #region 处[qt=x][/qt]标记
+
+            //处[qt=x][/qt]标记
+            r = new Regex(@"(\[qt=)(\d*?),(\d*?)\]([\S\t]*?)(\[\/qt\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(),
+                 "<embed src=" + m.Groups[4].ToString() + " width=" + m.Groups[2].ToString() + " height=" + m.Groups[3].ToString() + " autoplay=true loop=false controller=true playeveryframe=false cache=false scale=TOFIT bgcolor=#000000 kioskmode=false targetcache=false pluginspage=http://www.apple.com/quicktime/>");
+            }
+
+            #endregion 处[qt=x][/qt]标记
+
+            #region 处[QUOTE][/QUOTE]标记
+
+            r = new Regex(@"(\[QUOTE\])([ \S\t]*?)(\[\/QUOTE\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(), "<table cellpadding=2 cellspacing=1 border=0 WIDTH=94% bgcolor=#CCCCCC align=center  style=FONT-SIZE: 9pt><tr><td bgcolor=#F3F3F3><table width=100% cellpadding=5 cellspacing=1 border=0><TR><TD >" + m.Groups[2].ToString() + "</table></table><br>");
+            }
+
+            #endregion 处[QUOTE][/QUOTE]标记
+
+            #region 处[move][/move]标记
+
+            r = new Regex(@"(\[move\])([ \S\t]*?)(\[\/move\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(), "<MARQUEE scrollamount=3>" + m.Groups[2].ToString() + "</MARQUEE>");
+            }
+
+            #endregion 处[move][/move]标记
+
+            #region 处[FLY][/FLY]标记
+
+            r = new Regex(@"(\[FLY\])([ \S\t]*?)(\[\/FLY\])", RegexOptions.IgnoreCase);
+            for (m = r.Match(str); m.Success; m = m.NextMatch())
+            {
+                str = str.Replace(m.Groups[0].ToString(), "<MARQUEE width=80% behavior=alternate scrollamount=3>" + m.Groups[2].ToString() + "</MARQUEE>");
+            }
+
+            #endregion 处[FLY][/FLY]标记
+
+            return str;
+        }
+
+        public static String XmlDecode(String data)
+        {
+            return Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(data, "&apos;", "'", RegexOptions.IgnoreCase), "&quot;", "\"", RegexOptions.IgnoreCase), "&lt;", "<", RegexOptions.IgnoreCase), "&gt;", ">", RegexOptions.IgnoreCase), "&amp;", "&", RegexOptions.IgnoreCase);
+        }
+
+        public static String XmlEncode(String data)
+        {
+            return data.Replace("&", "&amp;").Replace(">", "&gt;").Replace("<", "&lt;").Replace("\"", "&quot;").Replace("'", "&apos;");
+        }
+
+        /// <summary>
+        /// 判断是否为IP
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        public static Boolean IsIP(String ip)
+        {
+            return Regex.IsMatch(ip, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$");
+        }
+
+        public static Boolean IsIPSect(String ip)
+        {
+            return Regex.IsMatch(ip, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){2}((2[0-4]\d|25[0-5]|[01]?\d\d?|\*)\.)(2[0-4]\d|25[0-5]|[01]?\d\d?|\*)$");
+        }
+
+        /// <summary>
+        /// 返回指定IP是否在指定的IP数组所限定的范围内, IP数组内的IP地址可以使用*表示该IP段任意, 例如192.168.1.*
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="iparray"></param>
+        /// <returns></returns>
+        public static Boolean InIPArray(String ip, String[] iparray)
+        {
+            String dot = ".";
+            String[] userip = ip.ExtensionSplit(dot);
+
+            for (Int32 n = 0; n < iparray.Length; n++)
+            {
+                String[] tmp = iparray[n].ExtensionSplit(dot);
+                Int32 r = 0;
+                for (Int32 i = 0; i < tmp.Length; i++)
+                {
+                    if (tmp[i] == "*") return true;
+
+                    if (userip.Length > i)
+                    {
+                        if (tmp[i] == userip[i])
+                        {
+                            r++;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (r == 4)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

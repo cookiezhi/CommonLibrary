@@ -4,11 +4,10 @@ using Stone.ConfigurationFiles.Utility.Logging;
 using Stone.Framework.Common.Logging;
 using System.Diagnostics;
 using System.Threading;
+using InternalLogger = Microsoft.Practices.EnterpriseLibrary.Logging.Logger;
 
 namespace Stone.Website.Utility.Logging
 {
-    using InternalLogger = Microsoft.Practices.EnterpriseLibrary.Logging.Logger;
-
     public class Logger : ILogger
     {
         public void LogEvent(string category, int eventId, params object[] parameters)
