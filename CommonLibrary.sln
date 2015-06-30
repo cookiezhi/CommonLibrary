@@ -126,6 +126,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EnterpriseLibrary5.0", "Ent
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stone.Website.Utility.LogTraceListener", "Stone.Website.Utility\Stone.Website.Utility.LogTraceListener\Stone.Website.Utility.LogTraceListener.csproj", "{DDAD60D1-1DA6-4D43-A575-A69744C0D5CD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stone.Ibatis4Net", "Stone.Ibatis4Net", "{34E485A2-A761-4790-9C77-370BF0410D8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stone.Ibatis4Net.Core", "Stone.Ibatis4Net\Stone.Ibatis4Net.Core\Stone.Ibatis4Net.Core.csproj", "{E41BAE9B-970A-473A-8D81-7EEF10720748}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IBatisNet", "IBatisNet", "{45FB8CA0-B784-45A8-AF96-8E526C31ED50}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\Castle.DynamicProxy.dll = C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\Castle.DynamicProxy.dll
+		C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\IBatisNet.Common.dll = C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\IBatisNet.Common.dll
+		C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\IBatisNet.Common.Logging.Log4Net.dll = C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\IBatisNet.Common.Logging.Log4Net.dll
+		C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\IBatisNet.DataMapper.dll = C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\IBatisNet.DataMapper.dll
+		C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\log4net.dll = C:\Users\chenshi2\Desktop\IBatisNetConsole\IBatisNetConsole\Lib\log4net.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +165,10 @@ Global
 		{DDAD60D1-1DA6-4D43-A575-A69744C0D5CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDAD60D1-1DA6-4D43-A575-A69744C0D5CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDAD60D1-1DA6-4D43-A575-A69744C0D5CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E41BAE9B-970A-473A-8D81-7EEF10720748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E41BAE9B-970A-473A-8D81-7EEF10720748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E41BAE9B-970A-473A-8D81-7EEF10720748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E41BAE9B-970A-473A-8D81-7EEF10720748}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,5 +184,7 @@ Global
 		{DA2D1B65-DCB4-4825-A09A-06988CF698DB} = {A807227E-9361-4BC7-9676-614DA05501D2}
 		{6FB9E05A-5B87-4F55-BBFB-F490D6823627} = {A807227E-9361-4BC7-9676-614DA05501D2}
 		{71B2A3B6-F0D4-44BC-B982-2BD68B5B7FAF} = {BBD54F78-B4E9-4DBF-8674-D6871B96A519}
+		{45FB8CA0-B784-45A8-AF96-8E526C31ED50} = {BBD54F78-B4E9-4DBF-8674-D6871B96A519}
+		{E41BAE9B-970A-473A-8D81-7EEF10720748} = {34E485A2-A761-4790-9C77-370BF0410D8B}
 	EndGlobalSection
 EndGlobal
