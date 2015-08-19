@@ -2,51 +2,57 @@
 using Stone.ConfigurationFiles;
 using Stone.ConfigurationFiles.Utility.Logging;
 using Stone.Framework.Common.Logging;
+using System;
 using System.Diagnostics;
 using System.Threading;
-using InternalLogger = Microsoft.Practices.EnterpriseLibrary.Logging.Logger;
 
 namespace Stone.Website.Utility.Logging
 {
+    using InternalLogger = Microsoft.Practices.EnterpriseLibrary.Logging.Logger;
+
+    /// <summary>
+    /// Summary of this class.
+    /// </summary>
     public class Logger : ILogger
     {
-        public void LogEvent(string category, int eventId, params object[] parameters)
+        #region ILogger Members
+
+        public void LogEvent(String category, Int32 eventId, params Object[] parameters)
         {
-            var entry = GetLogEntry(category, eventId);
-            var message = "No Message";
-            var severity = TraceEventType.Information;
+            LogEntryInfo entry = GetLogEntry(category, eventId);
+            String message = "No Message";
+            TraceEventType severity = TraceEventType.Information;
             if (entry != null)
             {
                 message = entry.Message;
                 severity = entry.Severity;
             }
-
             if (parameters != null && parameters.Length > 0)
             {
-                message = string.Format(message, parameters);
+                message = String.Format(message, parameters);
             }
-
             LogEvent(category, eventId, message, severity);
         }
 
-        private static void LogEvent(string category, int eventId, string message, TraceEventType severity)
+        #endregion ILogger Members
+
+        private static void LogEvent(String category, Int32 eventId, String message, TraceEventType serverity)
         {
-            var entry = new LogEntry();
+            LogEntry entry = new LogEntry();
             entry.Categories.Add(category);
             entry.EventId = eventId;
             entry.Message = message;
-            entry.Severity = severity;
+            entry.Severity = serverity;
             entry.ManagedThreadName = Thread.CurrentThread.ManagedThreadId.ToString();
             InternalLogger.Write(entry);
         }
 
-        private static LogEntryInfo GetLogEntry(string category, int eventId)
+        internal static LogEntryInfo GetLogEntry(String category, Int32 eventId)
         {
-            var categoryInfo = GetLogCategory(category);
-
+            LogCategoryInfo categoryInfo = GetLogCategory(category);
             if (categoryInfo != null)
             {
-                foreach (var entry in categoryInfo.LogEntryList)
+                foreach (LogEntryInfo entry in categoryInfo.LogEntryList)
                 {
                     if (entry.EventId == eventId)
                     {
@@ -57,9 +63,9 @@ namespace Stone.Website.Utility.Logging
             return null;
         }
 
-        private static LogCategoryInfo GetLogCategory(string categoryName)
+        internal static LogCategoryInfo GetLogCategory(String categoryName)
         {
-            foreach (var category in ConfigurationManager.LogEntryConfigurationManager.CategoryList)
+            foreach (LogCategoryInfo category in ConfigurationManager.LogEntryConfigurationManager.CategoryList)
             {
                 if (category.CategoryName.Trim().ToLower() == categoryName.Trim().ToLower())
                 {

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Stone.Framework.Common.Logging
 {
@@ -13,6 +9,7 @@ namespace Stone.Framework.Common.Logging
         private const String LOGGER_TYPE_NAME = "LoggerTypeName";
         private static ILogger _mSingleLogger = null;
         private static Object _mSynObj = new Object();
+
         public static ILogger CreateLogger()
         {
             if (_mSingleLogger == null)
